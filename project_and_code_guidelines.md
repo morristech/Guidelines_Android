@@ -2,7 +2,7 @@
 
 ## 1.1 Project structure 
 
-New projects should follow the Android Gradle project structure that is defined on the [Android Gradle plugin user guide](http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Project-Structure). The [BoilerPlate](https://github.com/ribot/android-boilerplate) project is a good reference.
+New projects should follow the Android Gradle project structure that is defined on the [Android Gradle plugin user guide](http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Project-Structure).
 
 ## 1.2 Package structure 
 
@@ -97,6 +97,9 @@ Resource files in the values folder should be __plural__, e.g. `strings.xml`, `s
 
 # 2 Code guidelines 
 
+Don't forget that alot of IDE's such as Android Studio have a 'Reformat Code...' option (alt+cmd+L - Android Studio Shortcut) which will auto format spacing, indentations and imports, amoungst other things, for you.
+See more info [here](https://www.jetbrains.com/idea/help/reformatting-source-code.html)
+
 ## 2.1 Java language rules
 
 ### 2.1.1 Don't ignore exceptions
@@ -111,7 +114,7 @@ void setServerPort(String value) {
 }
 ```
 
-_While you may think that your code will never encounter this error condition or that it is not important to handle it, ignoring exceptions like above creates mines in your code for someone else to trip over some day. You must handle every Exception in your code in some principled way. The specific handling varies depending on the case._ - ([Android code style guidelines](https://source.android.com/source/code-style.html))
+While you may think that your code will never encounter this error condition or that it is not important to handle it, ignoring exceptions can be dangerous. You must handle __every__ Exception in your code in some principled way. The specific handling varies depending on the case. - ([Android code style guidelines](https://source.android.com/source/code-style.html))
 
 See alternatives [here](https://source.android.com/source/code-style.html#dont-ignore-exceptions).
 	
@@ -124,7 +127,7 @@ try {
     someComplicatedIOFunction();        // may throw IOException 
     someComplicatedParsingFunction();   // may throw ParsingException 
     someComplicatedSecurityFunction();  // may throw SecurityException 
-    // phew, made it all the way 
+    //...
 } catch (Exception e) {                 // I'll just catch all exceptions 
     handleError();                      // with one generic handler!
 }
@@ -217,15 +220,15 @@ Braces around the statements are required unless the condition and the body fit 
 
 If the condition and the body fit on one line and that line is shorter than the max line length, then do __not__ use braces e.g.
 
+Correct:
 ```java
 if (condition) body();
 ```
 
-This is __bad__:
-
+Incorrect:
 ```java
 if (condition)
-    body();  // bad!
+    body();
 ```
         
 ### 2.2.6 Use standard Java annotations
@@ -433,15 +436,7 @@ __Note 2__: if we provide the methods described above, the keys for extras and a
 
 ### 2.2.15 Line length limit
 
-Code lines should not exceed __100 characters__. If the line is longer than this limit there are usually two options to reduce its length:
-
-* Extract a local variable or method (Preferable).
-* Apply line-wrapping to divide a single line into multiple ones. 
-
-There are two __exceptions__ where is possible to have lines longer than 100:
-
-* Lines that are not possible to split, e.g. long URLs in comments.
-* `package` and `import` statements. 
+There is no formal line length limit, however lines should be wrapped where possible for clarity and ease of reading.
 
 #### 2.2.15.1 Line-wrapping strategies
 
@@ -505,8 +500,7 @@ public Observable<Location> syncLocations() {
 
 When an XML element doesn't have any content, you __must__ use self closing tags.
 
-This is good:
-
+Correct:
 ```xml
 <TextView
 	android:id="@+id/text_view_profile"
@@ -514,17 +508,14 @@ This is good:
 	android:layout_height="wrap_content" />
 ```
         
-This is __bad__ :
-
+Incorrect:
 ```xml
-<!-- Don't do this! -->
 <TextView
     android:id="@+id/text_view_profile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 </TextView>
 ```
-
 
 ### 2.3.2 Resources naming 
 
@@ -534,12 +525,16 @@ Resource IDs and names are written in __lowercase_underscore__
 
 IDs should be prefixed with the name of the element in lowercase underscore. For example:
 
-
 | Element            | Prefix            |
 | -----------------  | ----------------- |
 | `TextView`           | `text_`             |
 | `ImageView`          | `image_`            | 
-| `Button`             | `button_`           |   
+| `EditText`          | `edit_`            | 
+| `Button`             | `button_`           |  
+| `CardView`          | `card_`            | 
+| `RelativeLayout`          | `rel_`            | 
+| `LinearLayout`          | `lin_`            | 
+| `FrameLayout`          | `frame_`            | 
 | `Menu`               | `menu_`             |
 
 Image view example:
@@ -565,7 +560,6 @@ Menu example:
 
 String names start with a prefix that indentifies the section they belong to. For example `registration_email_hint` or `registration_name_hint`. If a string __doesn't belong__ to any section then you should follow the rules below:
 
-
 | Prefix             | Description                           |
 | -----------------  | --------------------------------------|
 | `error_`             | An error message                      |
@@ -573,11 +567,31 @@ String names start with a prefix that indentifies the section they belong to. Fo
 | `title_`             | A title, i.e. a dialog title          | 
 | `action_`            | An action such as "Save" or "Create"  |
 
+The strings.xml file should also be divided into these sections, in order that it becomes easy to read and find the necessary strings.
 
+Example:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<!-- Titles -->
+	<string name="title_activity_search">Search</string>
+	<string name="title_activity_myprofile">My Profile</string>
+	<string name="title_activity_myfavourites">My Favourites</string>
+	<string name="title_alert_areyousure">Are you sure?</string>
+	<string name="title_alert_whatsthis">What\'s this?</string>
+	
+	<!-- Actions -->
+	<string name="apply">Apply</string>
+	<string name="retry">Retry</string>
+	<string name="sort">Sort</string>
+	<string name="filter">Filter</string>
+	<string name="save">Save</string>
+</resources>
+```
 
 #### 2.3.2.3 Styles and Themes
 
-Unless the rest of resources, style names are written in __UpperCamelCase__.
+Unlike the rest of resources, style names are written in __UpperCamelCase__.
 
 ### 2.3.3 Attributes ordering 
 
