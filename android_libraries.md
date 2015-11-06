@@ -12,11 +12,12 @@
 ### Architecture
 - [RxJava](https://github.com/ReactiveX/RxJava) & [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 - [Otto](http://square.github.io/otto/)
+- [EventBus](https://github.com/greenrobot/EventBus)
 
 ### Networking
 - [Okhttp](http://square.github.io/okhttp/)
 - [Retrofit](https://github.com/square/retrofit)
-- [Picasso](http://square.github.io/picasso/)
+- [ImageLoader](https://github.com/nostra13/Android-Universal-Image-Loader)
 - [Gson](https://code.google.com/p/google-gson/)
 
 ### Views
